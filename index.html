@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!--
+  Shakthivel portfolio — static shell only.
+  Behavior (theme, reviews, modal) lives in script.js; tokens and layout in style.css.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Shakthivel — full-stack developer portfolio. Projects, skills, and visitor reviews."
+    />
+    <title>Shakthivel — Developer Portfolio</title>
+    <!-- Distinctive, readable UI font (SaaS-friendly) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Skip link improves keyboard/screen-reader navigation -->
+    <a class="skip-link" href="#about">Skip to content</a>
+
+    <header class="site-header" role="banner">
+      <div class="header-inner">
+        <a href="#hero" class="logo">Shakthivel</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle dark mode"
+          title="Toggle theme"
+        >
+          <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀️</span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Full-viewport hero with gradient name and animated tagline -->
+      <section id="hero" class="hero section-animate" aria-labelledby="hero-title">
+        <div class="hero__inner">
+          <p class="hero__eyebrow fade-in">Hello, I'm</p>
+          <h1 id="hero-title" class="hero__title gradient-text fade-in fade-in--delay-1">
+            Shakthivel
+          </h1>
+          <p class="hero__tagline fade-in fade-in--delay-2" id="tagline" aria-live="polite"></p>
+          <div class="hero__actions fade-in fade-in--delay-3">
+            <a href="#about" class="btn btn--primary">About me</a>
+            <a href="#reviews" class="btn btn--ghost">Reviews</a>
+          </div>
+        </div>
+        <div class="hero__scroll-hint" aria-hidden="true">Scroll</div>
+      </section>
+
+      <!-- Bio + skill pills -->
+      <section id="about" class="about section section-animate" aria-labelledby="about-title">
+        <div class="container">
+          <h2 id="about-title" class="section__title">About</h2>
+          <p class="about__bio">
+            I'm a tech-savvy, highly motivated aspiring developer passionate about building
+            scalable applications and exploring modern technologies. I care about full-stack
+            development, cloud computing, and DevOps — always learning and experimenting with new
+            tools to ship better software.
+          </p>
+          <h3 class="about__skills-heading">Skills</h3>
+          <ul class="skill-pills" aria-label="Technical skills">
+            <li class="skill-pills__item">HTML</li>
+            <li class="skill-pills__item">CSS</li>
+            <li class="skill-pills__item">JS</li>
+            <li class="skill-pills__item">Node.js</li>
+            <li class="skill-pills__item">MongoDB</li>
+            <li class="skill-pills__item">Docker</li>
+            <li class="skill-pills__item">AWS</li>
+            <li class="skill-pills__item">Git</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Reviews loaded from API -->
+      <section
+        id="reviews"
+        class="reviews section section-animate"
+        aria-labelledby="reviews-title"
+      >
+        <div class="container">
+          <h2 id="reviews-title" class="section__title">Reviews</h2>
+          <p class="reviews__intro">
+            Kind words from visitors. Leave yours with the button below.
+          </p>
+          <div id="reviewsStatus" class="reviews__status" role="status" aria-live="polite"></div>
+          <ul id="reviewsList" class="reviews__grid"></ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© <span id="year"></span> Shakthivel. Built with care.</p>
+      </div>
+    </footer>
+
+    <!-- Fixed CTA opens the review modal -->
+    <button type="button" class="fab-review" id="openReviewModal" aria-haspopup="dialog">
+      <span class="fab-review__emoji" aria-hidden="true">✍️</span>
+      <span class="fab-review__label">Leave a Review</span>
+    </button>
+
+    <!-- Modal: backdrop + dialog with form -->
+    <div
+      class="modal"
+      id="reviewModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+      aria-hidden="true"
+      hidden
+    >
+      <div class="modal__backdrop" id="modalBackdrop" tabindex="-1"></div>
+      <div class="modal__panel">
+        <div class="modal__header">
+          <h2 id="modalTitle" class="modal__title">Leave a review</h2>
+          <button
+            type="button"
+            class="modal__close"
+            id="closeModalBtn"
+            aria-label="Close dialog"
+          >
+            ✕
+          </button>
+        </div>
+        <form id="reviewForm" class="modal__form" novalidate>
+          <div class="field">
+            <label class="field__label" for="reviewName">Name</label>
+            <input
+              id="reviewName"
+              name="name"
+              type="text"
+              class="field__input"
+              placeholder="Anonymous"
+              autocomplete="name"
+            />
+          </div>
+          <div class="field">
+            <label class="field__label" for="reviewComment">Comment <span aria-hidden="true">*</span></label>
+            <textarea
+              id="reviewComment"
+              name="comment"
+              class="field__input field__input--textarea"
+              rows="4"
+              placeholder="Share your thoughts…"
+              required
+            ></textarea>
+            <p class="field__error" id="commentError" role="alert" hidden></p>
+          </div>
+          <p class="form-message form-message--error" id="formError" role="alert" hidden></p>
+          <p class="form-message form-message--success" id="formSuccess" role="status" hidden></p>
+          <button type="submit" class="btn btn--primary btn--block" id="submitReview">
+            <span class="btn__text">Submit</span>
+            <span class="btn__spinner" id="submitSpinner" hidden aria-hidden="true"></span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
